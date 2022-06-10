@@ -67,9 +67,17 @@ int cd(char **args) {
   return 1;
 }
 
+int exit_from_sh(void) {
+  return 0;
+}
+
 int execute(char **args) {
   if (strcmp(args[0], "cd") == 0) {
     return cd(args);
+  }
+
+  if (strcmp(args[0], "exit") == 0) {
+    return exit_from_sh();
   }
 
   return launch(args);
@@ -82,7 +90,7 @@ void loop(void) {
   char **args;
 
   do {
-    printf("root > ");
+    printf("> ");
 
     // Read
     line = read_line();
