@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "builtin.h"
 
 char *read_line() {
   int c;
@@ -57,18 +58,6 @@ int launch(char **args) {
   }
 
   return 1;
-}
-
-int cd(char **args) {
-  if (chdir(args[1]) != 0) {
-    perror("error!!!");
-  }
-
-  return 1;
-}
-
-int exit_from_sh(void) {
-  return 0;
 }
 
 int execute(char **args) {
