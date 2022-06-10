@@ -40,7 +40,7 @@ char **split_line(char *line) {
   return tokens;
 }
 
-int execute(char **args) {
+int launch(char **args) {
   int status;
   pid_t pid;
 
@@ -57,6 +57,22 @@ int execute(char **args) {
   }
 
   return 1;
+}
+
+int cd(char **args) {
+  if (chdir(args[1]) != 0) {
+    perror("error!!!");
+  }
+
+  return 1;
+}
+
+int execute(char **args) {
+  if (strcmp(args[0], "cd") == 0) {
+    return cd(args);
+  }
+
+  return launch(args);
 }
 
 void loop(void) {
