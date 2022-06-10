@@ -24,47 +24,63 @@ char *read_line() {
 
 // Use only whitespace to separate arguments
 char **split_line(char *line) {
-    int position = 0;
-    char **tokens = malloc(1024); //[string, string, ...]
-    char *token; // string
+  int position = 0;
+  char **tokens = malloc(1024); //[string, string, ...]
+  char *token; // string
 
-    token = strtok(line, " ");
+  token = strtok(line, " ");
 
-    while (token != NULL) {
-      tokens[position] = token;
-      position++;
+  while (token != NULL) {
+    tokens[position] = token;
+    position++;
 
-      token = strtok(NULL, " ");
-    }
+    token = strtok(NULL, " ");
+  }
 
-    return tokens;
+  return tokens;
 }
 
-void lsh_loop(void) {
+int execute(char **args) {
+  int status;
+  pid_t pid;
+
+  pid = fork();
+
+  if (pid == 0) {
+    // child process
+    execvp(args[0], args);
+  } else {
+    // parent process
+    do {
+      waitpid(pid, &status, WUNTRACED);
+    } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+  }
+
+  return 1;
+}
+
+void loop(void) {
   int status;
   int c;
   char *line;
   char **args;
 
   do {
-    // Read
-
-    // Parse
-
-    // Execute
-
     printf("root > ");
 
+    // Read
     line = read_line();
 
-    // printf("%d\n", line[0]);
+    // Parse
     args = split_line(line);
 
     printf("%c\n", args[0][0]);
     printf("%c\n", args[0][1]);
     printf("%c\n", args[1][0]);
     printf("%c\n", args[1][1]);
-    // status = execute(args);
+
+    // Execute
+    status = execute(args);
 
   } while(status);
 }
@@ -73,7 +89,7 @@ int main(int argc, char **argv) {
    // Load config files, if any.
 
    // Run command loop.
-  lsh_loop();
+  loop();
 
   // Perform any shutdown/cleanup.
 
