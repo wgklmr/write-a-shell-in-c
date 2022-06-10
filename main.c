@@ -8,7 +8,7 @@ char *read_line() {
   int c;
   int position = 0;
   int buffer_size = 1024;
-  char *buffer = malloc(buffer_size); // 確保したメモリのポインタを返す
+  char *buffer = malloc(buffer_size);
 
   do {
     c = getchar();
@@ -25,8 +25,8 @@ char *read_line() {
 // Use only whitespace to separate arguments
 char **split_line(char *line) {
   int position = 0;
-  char **tokens = malloc(1024); //[string, string, ...]
-  char *token; // string
+  char **tokens = malloc(1024);
+  char *token;
 
   token = strtok(line, " ");
 
@@ -89,11 +89,6 @@ void loop(void) {
 
     // Parse
     args = split_line(line);
-
-    printf("%c\n", args[0][0]);
-    printf("%c\n", args[0][1]);
-    printf("%c\n", args[1][0]);
-    printf("%c\n", args[1][1]);
 
     // Execute
     status = execute(args);
