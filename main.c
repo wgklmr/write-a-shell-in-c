@@ -72,6 +72,10 @@ int exit_from_sh(void) {
 }
 
 int execute(char **args) {
+  if (args[0] == NULL) {
+    return 1;
+  }
+
   if (strcmp(args[0], "cd") == 0) {
     return cd(args);
   }
